@@ -341,7 +341,7 @@ let pageInit = {
 
 ```js
 var result = arr.sort(()=>{
-  return a -b;
+  return a - b;
 })
 ```
 
