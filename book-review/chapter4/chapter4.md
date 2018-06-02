@@ -180,5 +180,96 @@ console.log(Object.getOwnPropertyNames(obj));
 * 엔진마다 다르게 for-in, Object.keys, JSON.stringfy 같은 경우 지정되지 않은 열거 순서를 사용한다.
 
 ## 프로토타입 개선
+ES5에서 인스턴스의 프로토타입을 변경하는 것은 주요한 가정이었다. 하지만 ES6에서 이 인스턴스의 프로토타입을 변경할 수 있게 된다.
+
+### 프로토타입 변경하기
+* `Object.setPrototype()`을 통해 객체 프로토타입이 인스턴스화 된후에도 변경될 수 있게 했다.
+
+```js
+let person = {
+  greeting() {
+    return 'hello';
+  }
+};
+let dog = {
+  greeting() {
+    return 'woof!';
+  }
+};
+
+let friend = Object.create(person);
+console.log(friend.greeting()); // hello
+
+Object.setProtype(friend, dog);
+console.log(friend.greeting()); // woof!
+```
+
+### Super를 통한 쉬운 프로토 타입 접근!
+
+* `super`는 Object.getPrototypeOf()와 .call(this)를 사용하는 것처럼 작동한다.
+    * 즉 super는 `현재 객체의 프로토타입을 가리키는 포인터`이며 사실상 Object.getPrototypeOf(this)이다.
+* super는 간결한 메서드 안에서만 사용할 수 있으며 다른곳에서는 사용할 수 없다.
+
+```js
+let person = {
+  getGreeting() {
+    return 'hello';
+  }
+};
+
+let friend = {
+  getGreeting() {
+    return Object.getPrototypeOf(this).getGreeting.call(this) + ', hi!';
+  }
+};
+Object.setPrototypeOf(friend, person);
+
+let relative = Object.create(friend);
+
+console.log(person.getGreeting()); // hello
+console.log(friend.getGreeting()); // hello, hi!
+console.log(relative.getGreeting()); // 에러!
+```
+
+* 에러가 나는 이유는 다음과 같다.
+    * this는 relative이다.
+    * Object.getPrototypeOf(this)는 friend일 것이다.
+    * friend의 getGreeting을 호출하는데 this는 또 relative이다.
+    * 결국 또 같은 메서드를 호출한다. 재귀적으로 계속해서 호출할 것이고 스택 오버플로우 에러가 날 것이다. 
+
+```js
+...
+let friend = {
+  getGreeting() {
+    return super.getGreeting() + ', hi!';
+  }
+};
+...
+console.log(relative.getGreeting()); // hello, hi!
+```
+
+* super 참조는 동적이지 않기 때문에 항상 올바른 객체를 참조한다.
+    * 얼마나 많은 객체가 그 메서드를 참조했는지는 중요치 않다.
 
 ## 공식적인 메소드 정의
+> ES6에서 '메서드'는 메서드가 속한 객체를 내부 [[HomeObject]]프로퍼티로 갖는 함수를 메서드로 칭한다. 
+
+* 어디서든 super를 참조할 때는 [[HomeObject]]를 사용하여 동작을 결정한다.
+    1. 프로토 타입을 참조하기 위해 [[HomeObject]]의 Object.getPrototypeOf()를 호출한다.
+    2. 그 프로토 타입에서 같은 이름의 함수를 검색한다.
+    3. this를 바인딩하고 메서드를 호출한다.
+
+```js
+let person = {
+  getGreeting() {
+    reutrn 'Hello';
+  }
+};
+let friend = {
+  getGreeting() {
+    return super.getGreeting() + ', hi!';
+  }
+};
+Object.setPrototype(friend, person);
+console.log(friend.getGreeting()); // Hello, hi!
+```
