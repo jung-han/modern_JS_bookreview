@@ -1,4 +1,2 @@
-function getName() {
-  // ... 
-}
-console.log(getName.name); // getName
+var a = () => 1;
+console.log(a instanceof Function);
