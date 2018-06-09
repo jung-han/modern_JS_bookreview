@@ -1,11 +1,14 @@
-let uid = Symbol('uid'),
-    uid2 = Symbol('uid2'),
-    uid3 = Symbol('uid3');
+function Person(name) {
+  this.name = name;
+}
 
-let obj = {
-  [uid]: '123',
-  [uid2]: '1234',
-  [uid3]: '12345'
-};
+Person.prototype[Symbol.toStringTag] = 'Hanjung';
 
-console.log(Object.getOwnPropertySymbols(obj)); // [ Symbol(uid), Symbol(uid2), Symbol(uid3) ]
+Person.prototype.toString = function() {
+  return this.name;
+}
+
+var me = new Person('hanjung!');
+
+console.log(me.toString()); // hanjung!
+console.log(Object.prototype.toString.call(me)); // [object Hanjung]
