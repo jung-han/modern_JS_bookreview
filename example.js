@@ -1,10 +1,11 @@
-let node = {
-  a: {
-    b: {
-      c: 10
-    },
-    d: 20
-  }
+let uid = Symbol('uid'),
+    uid2 = Symbol('uid2'),
+    uid3 = Symbol('uid3');
+
+let obj = {
+  [uid]: '123',
+  [uid2]: '1234',
+  [uid3]: '12345'
 };
-let {a: {b: {c}}} = node;
-console.log(c); // 10
+
+console.log(Object.getOwnPropertySymbols(obj)); // [ Symbol(uid), Symbol(uid2), Symbol(uid3) ]
