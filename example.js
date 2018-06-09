@@ -1,10 +1,10 @@
-let obj = {
-  1: 'hanjung',
-  0: '0jung',
-  2: 'doojung',
-  b: 'bjung',
-  a: 'ajung'
+let node = {
+  a: {
+    b: {
+      c: 10
+    },
+    d: 20
+  }
 };
-
-console.log(Object.getOwnPropertyNames(obj));
-// [ '0', '1', '2', 'b', 'a' ]
+let {a: {b: {c}}} = node;
+console.log(c); // 10
