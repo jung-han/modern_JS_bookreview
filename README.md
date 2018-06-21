@@ -9,3 +9,4 @@
 * chapter6 (심벌과 심벌 프로퍼티)
 * chapter7 (Set과 Map)
 * chapter8 (이터레이터와 제네레이터)
+* chapter9 (자바스크립트 클래스 소개)

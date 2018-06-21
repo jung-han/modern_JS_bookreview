@@ -1,13 +1,16 @@
-let key = {},
-    key2 = {};
-let weakMap = new WeakMap([[key, 'val']]);
+class CustomHTMLElement {
+  constructor(element) {
+    this.element = element;
+  }
+  get html() {
+    return this.element;
+  }
+  set html(value) {
+    this.element = value + 'hello';
+  }
+}
 
-weakMap.set(key2, 'val2');
-
-console.log(weakMap.has(key2)); // true
-console.log(weakMap.get(key2)); // val2
-
-weakMap.delete(key2);
-
-console.log(weakMap.has(key2)); // false
-console.log(weakMap.get(key2)); // undefined
+let obj = new CustomHTMLElement('<div></div>');
+console.log(obj.html); // <div></div>
+obj.html = '<div>hello</div>';
+console.log(obj.html); // <div>hello</div>hello
