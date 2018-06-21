@@ -1,14 +1,13 @@
-function Person(name) {
-  this.name = name;
-}
+let key = {},
+    key2 = {};
+let weakMap = new WeakMap([[key, 'val']]);
 
-Person.prototype[Symbol.toStringTag] = 'Hanjung';
+weakMap.set(key2, 'val2');
 
-Person.prototype.toString = function() {
-  return this.name;
-}
+console.log(weakMap.has(key2)); // true
+console.log(weakMap.get(key2)); // val2
 
-var me = new Person('hanjung!');
+weakMap.delete(key2);
 
-console.log(me.toString()); // hanjung!
-console.log(Object.prototype.toString.call(me)); // [object Hanjung]
+console.log(weakMap.has(key2)); // false
+console.log(weakMap.get(key2)); // undefined
