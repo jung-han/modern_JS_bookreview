@@ -127,3 +127,20 @@ console.log(obj.html); // <div>hello</div>hello
 ```
 
 접근자 프로퍼티는 다른 일반적인 메서드처럼 열거가 불가능해 집니다.
+
+## 계산된 멤버이름
+
+```js
+let methodName = 'sayName';
+
+class PersonClass {
+  constructor(name) {
+    this.name = name;
+  }
+  [methodName]() {
+    console.log(this.name);
+  }
+}
+let person = new PersonClass('hanjung');
+person.sayName(); // hanjung
+```
