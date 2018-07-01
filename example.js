@@ -1,22 +1,6 @@
-function *createIter() {
-  yield 1;
-  yield 2;
-  return 3;
-}
-function *createIter2(result) {
-  console.log(result);
-  yield 'a';
-  yield 'b';
-}
-function *createIterFactory() {
-  let res = yield *createIter();
-  yield *createIter2(res);
-}
+let numb = [20, 30, 50, 70, 100];
 
-var iter = createIterFactory();
-console.log(iter.next()); // { value: 1, done: false }
-console.log(iter.next()); // { value: 2, done: false }
-// 3
-console.log(iter.next()); // { value: 'a', done: false }
-console.log(iter.next()); // { value: 'b', done: false }
-console.log(iter.next()); // { value: undefined, done: true}
+console.log(numb.copyWithin(2, 0)); 
+// 배열 인덱스 2 부터 0에 있는 값을 복사
+// [20, 30, 20, 30, 50]
+
